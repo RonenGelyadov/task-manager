@@ -3,6 +3,7 @@ import ROUTES from "./routs";
 import Home from "../pages/Home";
 import About from "../pages/About";
 import Contact from "../pages/Contact";
+import Task from "../pages/Task";
 
 const Router = () => {
   return (
@@ -10,6 +11,7 @@ const Router = () => {
       <Route path={ROUTES.HOME} element={<Home />} />
       <Route path={ROUTES.ABOUT} element={<About />} />
       <Route path={ROUTES.CONTACT} element={<Contact />} />
+      <Route path={ROUTES.TASK + "/:id"} element={<Task />} />
     </Routes>
   );
 };
