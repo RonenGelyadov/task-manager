@@ -1,12 +1,14 @@
 import { Box, Container } from "@mui/material";
+import useTasks from "../hooks/useTasks";
 import TaskItem from "../components/TaskItem";
-import taskList from "../data/taskList";
 
 const Home = () => {
+  const { tasks } = useTasks();
+
   return (
     <Container dir="rtl" maxWidth="lg">
       <Box>
-        {taskList.map((t) => {
+        {tasks.map((t) => {
           return (
             <TaskItem
               key={t.id}

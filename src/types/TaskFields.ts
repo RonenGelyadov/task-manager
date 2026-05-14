@@ -4,5 +4,5 @@ export interface TaskFields {
   body: string;
   priority: "low" | "medium" | "high";
   dueDate: string;
-  isCompleted?: boolean;
+  isCompleted: boolean;
 }
