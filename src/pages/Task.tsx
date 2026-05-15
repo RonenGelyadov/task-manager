@@ -17,17 +17,22 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import FlagIcon from "@mui/icons-material/Flag";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import type { Task } from "../types/Task";
+import useTasks from "../hooks/useTasks";
 
 const Task = () => {
-  const task = {
-    title: "לסיים את פרויקט ה-Full Stack",
-    description:
-      "צריך לחבר את ה-Frontend ל-Node.js ולבצע בדיקות תקינות לכל ה-Endpoints. לא לשכוח לעדכן את קובץ ה-README לפני ההגשה.",
-    priority: "high",
-    dueDate: "20/05/2026",
-    status: "In Progress",
-    createdAt: "10/05/2026",
-  };
+  const [task, setTask] = useState<Task | null>();
+  const { id } = useParams();
+  const { findTask } = useTasks();
+
+  useEffect(() => {
+    if (id) {
+      const task = findTask(id);
+      setTask(task);
+    }
+  }, []);
 
   return (
     <Container dir="rtl" maxWidth="md" sx={{ py: 5 }}>
@@ -65,7 +70,7 @@ const Task = () => {
               variant="h4"
               sx={{ fontWeight: 700, mb: 1, color: "text.primary" }}
             >
-              {task.title}
+              {task?.title}
             </Typography>
             <Stack direction="row" spacing={1}>
               <Chip
@@ -76,7 +81,7 @@ const Task = () => {
                 sx={{ borderRadius: 1, fontWeight: 600, alignItems: "center" }}
               />
               <Typography variant="caption" sx={{ color: "text.disabled" }}>
-                נוצר ב-{task.createdAt}
+                נוצר ב-{task?.createdAt}
               </Typography>
             </Stack>
           </Box>
@@ -122,7 +127,7 @@ const Task = () => {
             variant="body1"
             sx={{ color: "text.primary", lineHeight: 1.8, fontSize: "1.1rem" }}
           >
-            {task.description}
+            {task?.body}
           </Typography>
         </Box>
 
@@ -148,7 +153,7 @@ const Task = () => {
                 תאריך יעד
               </Typography>
               <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                {task.dueDate}
+                {task?.dueDate}
               </Typography>
             </Box>
           </Box>
@@ -160,7 +165,7 @@ const Task = () => {
           />
 
           <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-            <FlagIcon color={task.priority === "high" ? "error" : "warning"} />
+            <FlagIcon color={task?.priority === "high" ? "error" : "warning"} />
             <Box>
               <Typography
                 variant="caption"
@@ -172,7 +177,7 @@ const Task = () => {
                 variant="body2"
                 sx={{ fontWeight: 600, textTransform: "capitalize" }}
               >
-                {task.priority === "high" ? "גבוהה מאוד" : "רגילה"}
+                {task?.priority === "high" ? "גבוהה מאוד" : "רגילה"}
               </Typography>
             </Box>
           </Box>

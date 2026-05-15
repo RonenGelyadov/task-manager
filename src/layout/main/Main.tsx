@@ -6,10 +6,11 @@ const Main = ({ children }: { children: ReactNode }) => {
     <Box
       component="main"
       sx={{
-        minHeight: "82vh",
         display: "flex",
         justifyContent: "center",
-        alignItems: "center",
+        flexGrow: 2,
+        overflowY: "auto",
+        paddingTop: "1em",
       }}
     >
       {children}

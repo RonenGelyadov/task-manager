@@ -4,7 +4,7 @@ import ROUTES from "../../router/routs";
 
 const Header = () => {
   return (
-    <AppBar position="sticky">
+    <AppBar position="static">
       <Toolbar
         sx={{
           display: "flex",
