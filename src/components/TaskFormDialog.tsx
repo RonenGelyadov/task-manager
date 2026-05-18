@@ -80,8 +80,11 @@ const TaskFormDialog = ({
         </DialogContent>
 
         <DialogActions dir="ltr">
+          <Button variant="contained" color="error" onClick={setClose}>
+            ביטול
+          </Button>
           <Button variant="contained" type="submit" color="primary">
-            OK
+            אישור
           </Button>
         </DialogActions>
       </Box>

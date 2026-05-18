@@ -1,11 +1,4 @@
-import {
-  Box,
-  Typography,
-  Paper,
-  Chip,
-  Checkbox,
-  Container,
-} from "@mui/material";
+import { Box, Typography, Paper, Chip, Container } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import type { Task } from "../types/Task";
 import ROUTES from "../router/routs";
@@ -48,7 +41,7 @@ const TaskItem = ({
   };
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" dir="rtl">
       <NavLink to={`${ROUTES.TASK}/${id}`} style={{ textDecoration: "none" }}>
         <Paper
           elevation={0}
@@ -69,19 +62,6 @@ const TaskItem = ({
             },
           }}
         >
-          {/* צ'קבוקס לסימון המשימה */}
-          <Box sx={{ pt: 0.5 }}>
-            <Checkbox
-              checked={isCompleted}
-              sx={{
-                color: "text.disabled",
-                "&.Mui-checked": {
-                  color: "primary.main",
-                },
-              }}
-            />
-          </Box>
-
           {/* אזור התוכן המרכזי */}
           <Box sx={{ flexGrow: 1, minWidth: 0 }}>
             <Typography

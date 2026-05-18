@@ -1,10 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import type { Task } from "../types/Task";
 
 const useTasks = () => {
   const [tasks, setTasks] = useState<Task[]>(
     JSON.parse(localStorage.getItem("tasks") as string) ?? [],
   );
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
 
   const handleAddTask = (task: Task) => {
     const newTasks: Task[] = [
@@ -19,20 +26,19 @@ const useTasks = () => {
         }),
       },
     ];
+
     setTasks(newTasks);
-    localStorage.setItem("tasks", JSON.stringify(newTasks));
   };
 
   const handleEditTask = (task: Task) => {
     const newTasks: Task[] = tasks.map((t) => (t.id === task.id ? task : t));
     setTasks(newTasks);
-    localStorage.setItem("tasks", JSON.stringify(newTasks));
   };
 
-  const handleDeleteTask = (id: string) => {
+  const handleDeleteTask = (id: string, returnHome: boolean = false) => {
     const newTasks: Task[] = tasks.filter((t) => t.id !== id);
     setTasks(newTasks);
-    localStorage.setItem("tasks", JSON.stringify(newTasks));
+    if (returnHome) navigate("/");
   };
 
   const findTask = (id: string) => {

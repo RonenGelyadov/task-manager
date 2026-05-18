@@ -25,14 +25,14 @@ import useTasks from "../hooks/useTasks";
 const Task = () => {
   const [task, setTask] = useState<Task | null>();
   const { id } = useParams();
-  const { findTask } = useTasks();
+  const { handleDeleteTask, findTask } = useTasks();
 
   useEffect(() => {
     if (id) {
       const task = findTask(id);
       setTask(task);
     }
-  }, []);
+  }, [id]);
 
   return (
     <Container dir="rtl" maxWidth="md" sx={{ py: 5 }}>
@@ -96,6 +96,9 @@ const Task = () => {
             <Tooltip title="מחק משימה">
               <IconButton
                 color="error"
+                onClick={() => {
+                  handleDeleteTask(task?.id as string, true);
+                }}
                 sx={{
                   border: "1px solid",
                   borderColor: "error.light",
