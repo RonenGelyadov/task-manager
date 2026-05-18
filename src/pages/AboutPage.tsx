@@ -1,6 +1,6 @@
 import { Box, Typography, Container, Paper, Divider } from "@mui/material";
 
-const About = () => {
+const AboutPage = () => {
   return (
     <Container
       dir="rtl"
@@ -134,4 +134,4 @@ const About = () => {
   );
 };
 
-export default About;
+export default AboutPage;

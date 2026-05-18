@@ -22,7 +22,7 @@ import { useParams } from "react-router-dom";
 import type { Task } from "../types/Task";
 import useTasks from "../hooks/useTasks";
 
-const Task = () => {
+const TaskPage = () => {
   const [task, setTask] = useState<Task | null>();
   const { id } = useParams();
   const { handleDeleteTask, findTask } = useTasks();
@@ -209,4 +209,4 @@ const Task = () => {
   );
 };
 
-export default Task;
+export default TaskPage;

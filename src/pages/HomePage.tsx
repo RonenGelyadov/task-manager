@@ -6,7 +6,7 @@ import useTasks from "../hooks/useTasks";
 import TaskItem from "../components/TaskItem";
 import TaskFormDialog from "../components/TaskFormDialog";
 
-const Home = () => {
+const HomePage = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const { tasks, handleAddTask } = useTasks();
@@ -53,4 +53,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;

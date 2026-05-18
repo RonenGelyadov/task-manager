@@ -1,17 +1,21 @@
 import { Route, Routes } from "react-router-dom";
 import ROUTES from "./routs";
-import Home from "../pages/Home";
-import About from "../pages/About";
-import Contact from "../pages/Contact";
-import Task from "../pages/Task";
+import HomePage from "../pages/HomePage";
+import AboutPage from "../pages/AboutPage";
+import ContactPage from "../pages/ContactPage";
+import TaskPage from "../pages/TaskPage";
+import LoginPage from "../pages/LoginPage";
+import RegisterPage from "../pages/RegisterPage";
 
 const Router = () => {
   return (
     <Routes>
-      <Route path={ROUTES.HOME} element={<Home />} />
-      <Route path={ROUTES.ABOUT} element={<About />} />
-      <Route path={ROUTES.CONTACT} element={<Contact />} />
-      <Route path={ROUTES.TASK + "/:id"} element={<Task />} />
+      <Route path={ROUTES.HOME} element={<HomePage />} />
+      <Route path={ROUTES.ABOUT} element={<AboutPage />} />
+      <Route path={ROUTES.CONTACT} element={<ContactPage />} />
+      <Route path={ROUTES.TASK + "/:id"} element={<TaskPage />} />
+      <Route path={ROUTES.LOGIN} element={<LoginPage />} />
+      <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
     </Routes>
   );
 };

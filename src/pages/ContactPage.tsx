@@ -8,7 +8,7 @@ import {
   Link,
 } from "@mui/material";
 
-const Contact = () => {
+const ContactPage = () => {
   return (
     <Container
       dir="rtl"
@@ -129,4 +129,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default ContactPage;

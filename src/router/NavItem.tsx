@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import { NavLink } from "react-router-dom";
 
 const navLinkStyle = {
@@ -24,7 +25,7 @@ const NavItem = ({ to, label }: NavItemProps) => {
         color: isActive ? "blue" : "white",
       })}
     >
-      {label}
+      <Typography variant="body1">{label}</Typography>
     </NavLink>
   );
 };
