@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Task } from "../types/Task";
+import ROUTES from "../router/routs";
 
 const useTasks = () => {
   const [tasks, setTasks] = useState<Task[]>(
@@ -36,9 +37,11 @@ const useTasks = () => {
   };
 
   const handleDeleteTask = (id: string, returnHome: boolean = false) => {
-    const newTasks: Task[] = tasks.filter((t) => t.id !== id);
-    setTasks(newTasks);
-    if (returnHome) navigate("/");
+    if (confirm("האם אתה בטוח שברצונך למחוק את המשימה ?")) {
+      const newTasks: Task[] = tasks.filter((t) => t.id !== id);
+      setTasks(newTasks);
+      if (returnHome) navigate(ROUTES.HOME);
+    }
   };
 
   const findTask = (id: string) => {

@@ -16,15 +16,19 @@ interface TaskFormDialogProps {
   open: boolean;
   setClose: () => void;
   handleSave: (data: Task) => void;
+  initialValues?: Task | null;
+  setTask?: (data: Task) => void;
 }
 
 const TaskFormDialog = ({
   open,
   setClose,
   handleSave,
+  initialValues,
+  setTask,
 }: TaskFormDialogProps) => {
   const { register, handleSubmit, control, reset } = useForm<Task>({
-    defaultValues: {
+    defaultValues: initialValues ?? {
       title: "",
       body: "",
       dueDate: "",
@@ -34,6 +38,11 @@ const TaskFormDialog = ({
 
   const onSubmit = (data: Task) => {
     handleSave(data);
+
+    if (setTask) {
+      setTask(data);
+    }
+
     reset();
     setClose();
   };

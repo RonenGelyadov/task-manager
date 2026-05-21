@@ -41,7 +41,7 @@ const AboutPage = () => {
       </Box>
 
       <Paper
-        elevation={0}
+        elevation={3}
         sx={{
           width: "100%",
           p: { xs: 3, sm: 5 },

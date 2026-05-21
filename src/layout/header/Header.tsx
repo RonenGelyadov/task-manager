@@ -24,6 +24,7 @@ const Header = () => {
           <NavItem to={ROUTES.HOME} label="Home" />
           <NavItem to={ROUTES.ABOUT} label="About" />
           <NavItem to={ROUTES.CONTACT} label="Contact" />
+          <NavItem to={ROUTES.LOGIN} label="Log In" />
         </Container>
       </Toolbar>
     </AppBar>

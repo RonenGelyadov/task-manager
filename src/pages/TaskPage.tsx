@@ -11,26 +11,30 @@ import {
   Tooltip,
 } from "@mui/material";
 // אייקונים
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import FlagIcon from "@mui/icons-material/Flag";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import type { Task } from "../types/Task";
 import useTasks from "../hooks/useTasks";
+import TaskFormDialog from "../components/TaskFormDialog";
 
 const TaskPage = () => {
   const [task, setTask] = useState<Task | null>();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
   const { id } = useParams();
-  const { handleDeleteTask, findTask } = useTasks();
+  const { handleDeleteTask, handleEditTask, findTask } = useTasks();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (id) {
-      const task = findTask(id);
-      setTask(task);
+      const foundTask = findTask(id);
+      setTask(foundTask);
     }
   }, [id]);
 
@@ -38,14 +42,15 @@ const TaskPage = () => {
     <Container dir="rtl" maxWidth="md" sx={{ py: 5 }}>
       {/* כפתור חזרה למעלה */}
       <Button
-        startIcon={<ArrowBackIcon />}
+        onClick={() => navigate("/")}
         sx={{ mb: 3, textTransform: "none", color: "text.secondary" }}
       >
-        חזרה לרשימה
+        <ArrowForwardIcon />
+        <Typography>חזרה לרשימה</Typography>
       </Button>
 
       <Paper
-        elevation={0}
+        elevation={3}
         sx={{
           p: { xs: 3, md: 5 },
           border: "1px solid",
@@ -87,9 +92,12 @@ const TaskPage = () => {
           </Box>
 
           {/* פעולות מהירות */}
-          <Stack direction="row" spacing={1}>
+          <Stack direction="row" sx={{ gap: 1 }}>
             <Tooltip title="ערוך משימה">
-              <IconButton sx={{ border: "1px solid", borderColor: "divider" }}>
+              <IconButton
+                sx={{ border: "1px solid", borderColor: "divider" }}
+                onClick={() => setIsOpen(!isOpen)}
+              >
                 <EditIcon fontSize="small" />
               </IconButton>
             </Tooltip>
@@ -205,6 +213,15 @@ const TaskPage = () => {
           סמן כמשימה שהושלמה
         </Button>
       </Paper>
+      {isOpen && (
+        <TaskFormDialog
+          open={isOpen}
+          setClose={() => setIsOpen(false)}
+          handleSave={handleEditTask}
+          initialValues={task}
+          setTask={setTask}
+        />
+      )}
     </Container>
   );
 };

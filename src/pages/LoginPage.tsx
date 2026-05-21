@@ -6,6 +6,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import NavItem from "../router/NavItem";
 
 const LoginPage = () => {
   return (
@@ -13,6 +14,7 @@ const LoginPage = () => {
       <Box
         sx={{
           marginTop: 8,
+          marginBottom: 2,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -57,6 +59,13 @@ const LoginPage = () => {
           </Box>
         </Paper>
       </Box>
+      <Typography
+        variant="body1"
+        sx={{ display: "flex", gap: 0.5, justifyContent: "center" }}
+      >
+        עדין ללא משתמש ? להרשמה לחצו
+        <NavItem label="כאן" to="/register" isMainNav={false} />
+      </Typography>
     </Container>
   );
 };

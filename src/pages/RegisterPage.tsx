@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
+import NavItem from "../router/NavItem";
 
 const RegisterPage = () => {
   const { register, handleSubmit } = useForm();
@@ -29,6 +30,7 @@ const RegisterPage = () => {
           elevation={10}
           sx={{
             padding: 4,
+            marginBottom: 2,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -41,7 +43,7 @@ const RegisterPage = () => {
             variant="h5"
             sx={{ mb: 3, fontWeight: "bold" }}
           >
-            התחברות
+            הרשמה
           </Typography>
 
           <Box
@@ -93,6 +95,14 @@ const RegisterPage = () => {
           </Box>
         </Paper>
       </Box>
+      <Typography
+        variant="body1"
+        sx={{ display: "flex", gap: 0.5, justifyContent: "center" }}
+      >
+        כבר רשומים ? לחצו
+        <NavItem label="כאן" to="/login" isMainNav={false} />
+        להתחבר
+      </Typography>
     </Container>
   );
 };

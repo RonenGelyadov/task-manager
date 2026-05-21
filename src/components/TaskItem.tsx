@@ -44,7 +44,7 @@ const TaskItem = ({
     <Container maxWidth="lg" dir="rtl">
       <NavLink to={`${ROUTES.TASK}/${id}`} style={{ textDecoration: "none" }}>
         <Paper
-          elevation={0}
+          elevation={1}
           sx={{
             p: { xs: 2, sm: 3 }, // קצת יותר מרווח במסכים גדולים
             mb: 2,
