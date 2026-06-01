@@ -1,5 +1,6 @@
 import { Typography } from "@mui/material";
 import { NavLink } from "react-router-dom";
+import { useTheme } from "../providers/ProjectThemeProvider";
 
 const navLinkStyle = {
   textDecoration: "none",
@@ -17,6 +18,8 @@ type NavItemProps = {
 };
 
 const NavItem = ({ to, label, isMainNav = true }: NavItemProps) => {
+  const { isDark } = useTheme();
+
   if (isMainNav) {
     return (
       <NavLink
@@ -24,7 +27,7 @@ const NavItem = ({ to, label, isMainNav = true }: NavItemProps) => {
         style={({ isActive }) => ({
           ...navLinkStyle,
           backgroundColor: isActive ? "white" : "transparent",
-          color: isActive ? "blue" : "white",
+          color: isActive ? (isDark ? "black" : "blue") : "white",
         })}
       >
         <Typography variant="body1">{label}</Typography>
@@ -33,7 +36,13 @@ const NavItem = ({ to, label, isMainNav = true }: NavItemProps) => {
   } else {
     return (
       <NavLink to={to}>
-        <Typography variant="body1">{label}</Typography>
+        <Typography
+          color="textPrimary"
+          variant="body1"
+          sx={{ textDecoration: "underline" }}
+        >
+          {label}
+        </Typography>
       </NavLink>
     );
   }

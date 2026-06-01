@@ -96,6 +96,7 @@ const RegisterPage = () => {
         </Paper>
       </Box>
       <Typography
+        color="textPrimary"
         variant="body1"
         component="span"
         sx={{ display: "flex", gap: 0.5, justifyContent: "center" }}

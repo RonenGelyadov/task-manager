@@ -87,6 +87,7 @@ const LoginPage = () => {
         </Paper>
       </Box>
       <Typography
+        color="textPrimary"
         component="span"
         variant="body1"
         sx={{ display: "flex", gap: 0.5, justifyContent: "center" }}

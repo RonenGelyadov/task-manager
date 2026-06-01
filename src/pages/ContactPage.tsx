@@ -48,8 +48,8 @@ const ContactPage = () => {
       <Paper
         elevation={3}
         sx={{
-          width: "100%",
-          p: { xs: 3, sm: 4 }, // רספונסיביות בסיסית לפאדינג
+          width: { xs: "90%", sm: "100%" },
+          p: { xs: 3, sm: 4 },
           border: "1px solid",
           borderColor: "divider",
           borderRadius: 3,
@@ -64,13 +64,7 @@ const ContactPage = () => {
             gap: 3, // יוצר רווח שווה בין כל השדות בטופס
           }}
         >
-          <TextField
-            label="שם מלא"
-            variant="outlined"
-            fullWidth
-            required
-            sx={{ backgroundColor: "background.default" }}
-          />
+          <TextField label="שם מלא" variant="outlined" fullWidth required />
 
           <TextField
             label="אימייל"
@@ -78,7 +72,6 @@ const ContactPage = () => {
             variant="outlined"
             fullWidth
             required
-            sx={{ backgroundColor: "background.default" }}
           />
 
           <TextField
@@ -88,7 +81,6 @@ const ContactPage = () => {
             rows={4}
             fullWidth
             required
-            sx={{ backgroundColor: "background.default" }}
           />
 
           <Button

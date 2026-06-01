@@ -16,11 +16,11 @@ const TaskItem = ({
   ): "error" | "warning" | "success" | "default" => {
     switch (level) {
       case "high":
-        return "error"; // אדום
+        return "error";
       case "medium":
-        return "warning"; // כתום
+        return "warning";
       case "low":
-        return "success"; // ירוק
+        return "success";
       default:
         return "default";
     }
@@ -46,7 +46,7 @@ const TaskItem = ({
         <Paper
           elevation={1}
           sx={{
-            p: { xs: 2, sm: 3 }, // קצת יותר מרווח במסכים גדולים
+            p: { xs: 2, sm: 3 },
             mb: 2,
             display: "flex",
             alignItems: "flex-start",
@@ -58,7 +58,7 @@ const TaskItem = ({
             transition: "all 0.2s ease-in-out",
             "&:hover": {
               borderColor: "primary.main",
-              boxShadow: "0 4px 12px rgba(0,0,0,0.05)", // צל עדין במעבר עכבר
+              boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
             },
           }}
         >
