@@ -7,8 +7,20 @@ import {
   Typography,
 } from "@mui/material";
 import NavItem from "../router/NavItem";
+import { useForm } from "react-hook-form";
+
+interface LoginForm {
+  email: string;
+  password: string;
+}
 
 const LoginPage = () => {
+  const { register, handleSubmit } = useForm<LoginForm>();
+
+  const onSubmit = (data: LoginForm) => {
+    console.log(data);
+  };
+
   return (
     <Container dir="rtl" maxWidth="xs">
       <Box
@@ -39,10 +51,25 @@ const LoginPage = () => {
             התחברות
           </Typography>
 
-          <Box component="form" sx={{ width: "100%" }}>
-            <TextField fullWidth label="כתובת אימייל" sx={{ mb: 2 }} />
+          <Box
+            component="form"
+            onSubmit={handleSubmit(onSubmit)}
+            sx={{ width: "100%" }}
+          >
+            <TextField
+              {...register("email")}
+              fullWidth
+              label="כתובת אימייל"
+              sx={{ mb: 2 }}
+            />
 
-            <TextField fullWidth label="סיסמה" type="password" sx={{ mb: 3 }} />
+            <TextField
+              {...register("password")}
+              fullWidth
+              label="סיסמה"
+              type="password"
+              sx={{ mb: 3 }}
+            />
 
             <Button
               type="submit"
@@ -60,6 +87,7 @@ const LoginPage = () => {
         </Paper>
       </Box>
       <Typography
+        component="span"
         variant="body1"
         sx={{ display: "flex", gap: 0.5, justifyContent: "center" }}
       >

@@ -97,6 +97,7 @@ const RegisterPage = () => {
       </Box>
       <Typography
         variant="body1"
+        component="span"
         sx={{ display: "flex", gap: 0.5, justifyContent: "center" }}
       >
         כבר רשומים ? לחצו
