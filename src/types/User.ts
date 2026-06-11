@@ -1,9 +1,8 @@
 export interface User {
   id: string;
   email: string;
-  password: string;
-  privateName: string;
+  firstName: string;
   lastName: string;
   age: number;
-  isAdmin: boolean;
+  role: "admin" | "user";
 }
