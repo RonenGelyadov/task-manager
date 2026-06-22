@@ -1,17 +1,21 @@
-import { useEffect, useState } from "react";
-import type { Column } from "../types/Column";
+import { useState } from "react";
+import type { ColumnType } from "../types/Column";
+import { getColumnsData } from "../services/columnsFirebaseService";
 
 const useColumns = () => {
-  const [columns, setColumns] = useState<Column[]>(
-    JSON.parse(localStorage.getItem("columns") as string) ?? [],
-  );
+  const [columns, setColumns] = useState<ColumnType[]>([]);
 
-  useEffect(() => {
-    localStorage.setItem("columns", JSON.stringify(columns));
-  }, [columns]);
+  const getColumns = async (): Promise<void> => {
+    try {
+      const savedColumns = await getColumnsData();
+      setColumns(savedColumns);
+    } catch (error) {
+      throw error;
+    }
+  };
 
-  const handleAddColumn = (column: Column) => {
-    const newColumns: Column[] = [
+  const handleAddColumn = (column: ColumnType) => {
+    const newColumns: ColumnType[] = [
       ...columns,
       {
         ...column,
@@ -22,7 +26,7 @@ const useColumns = () => {
     setColumns(newColumns);
   };
 
-  return { columns, handleAddColumn };
+  return { columns, getColumns, handleAddColumn };
 };
 
 export default useColumns;

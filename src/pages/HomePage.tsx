@@ -1,26 +1,37 @@
-import { useState } from "react";
-import { Box, Fab } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Box, Fab, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import ViewColumnRoundedIcon from "@mui/icons-material/ViewColumnRounded";
 import useTasks from "../hooks/useTasks";
-import TaskItem from "../components/TaskItem";
 import TaskFormDialog from "../components/TaskFormDialog";
 import useColumns from "../hooks/useColumns";
 import ColumnFormDialog from "../components/ColumnFormDialog";
 import Column from "../components/Column";
 
 const HomePage = () => {
-  const [isTaskOpen, setIsTaskOpen] = useState<boolean>(false);
-  const [isColumnOpen, setIsColumnOpen] = useState<boolean>(false);
+  const [isTaskOpen, setIsTaskOpen] = useState(false);
+  const [isColumnOpen, setIsColumnOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const { columns, handleAddColumn } = useColumns();
-  const { tasks, handleAddTask } = useTasks();
+  const { columns, getColumns, handleAddColumn } = useColumns();
+  const { tasks, getTasks, handleAddTask } = useTasks();
+
+  useEffect(() => {
+    getColumns();
+    getTasks();
+  }, []);
 
   return (
-    <Box sx={{ width: "100%", mb: 7 }}>
+    <Box sx={{ width: "95%", mb: 7, display: "flex", gap: 3 }}>
       {columns.map((c) => {
-        return <Column />;
+        return (
+          <Column
+            key={c.id}
+            name={c.name}
+            tasks={tasks.filter((t) => t.columnId === c.id)}
+          />
+        );
       })}
       <Box
         component="div"
@@ -46,7 +57,10 @@ const HomePage = () => {
           {isColumnOpen ? (
             <CloseIcon fontSize="large" />
           ) : (
-            <ViewColumnRoundedIcon fontSize="large" />
+            <>
+              <Typography variant="h5">+</Typography>
+              <ViewColumnRoundedIcon fontSize="large" />
+            </>
           )}
         </Fab>
         {isColumnOpen && (
@@ -67,11 +81,7 @@ const HomePage = () => {
             }}
             onClick={() => setIsTaskOpen(!isTaskOpen)}
           >
-            {isTaskOpen ? (
-              <CloseIcon fontSize="large" />
-            ) : (
-              <AddIcon fontSize="large" />
-            )}
+            {isTaskOpen ? <CloseIcon fontSize="large" /> : <AddIcon fontSize="large" />}
           </Fab>
         )}
         {isTaskOpen && (

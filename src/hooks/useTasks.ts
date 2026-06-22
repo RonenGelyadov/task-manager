@@ -1,34 +1,47 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import type { Task } from "../types/Task";
+import {
+  addNewTask,
+  deleteTaskById,
+  findTaskById,
+  getTasksData,
+} from "../services/tasksFirebaseService";
+import { useNavigate } from "react-router-dom";
 import ROUTES from "../router/routs";
 
 const useTasks = () => {
-  const [tasks, setTasks] = useState<Task[]>(
-    JSON.parse(localStorage.getItem("tasks") as string) ?? [],
-  );
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
+  const getTasks = async () => {
+    try {
+      const savedTasks = await getTasksData();
+      setTasks(savedTasks);
+    } catch (error) {
+      throw error;
+    }
+  };
 
-  const handleAddTask = (task: Task) => {
-    const newTasks: Task[] = [
-      ...tasks,
-      {
-        ...task,
-        id: crypto.randomUUID(),
-        createdAt: new Date().toLocaleDateString("en-GB", {
-          day: "2-digit",
-          month: "2-digit",
-          year: "2-digit",
-        }),
-      },
-    ];
+  const handleAddTask = async (task: Task) => {
+    const newTaskData: Task = {
+      ...task,
+      createdAt: new Date().toLocaleString("he-IL"),
+      isCompleted: false,
+    };
 
-    setTasks(newTasks);
+    try {
+      const newId = await addNewTask(newTaskData);
+
+      const newTask: Task = {
+        ...newTaskData,
+        id: newId,
+      };
+
+      setTasks((prev) => [...prev, newTask]);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleEditTask = (task: Task) => {
@@ -36,20 +49,21 @@ const useTasks = () => {
     setTasks(newTasks);
   };
 
-  const handleDeleteTask = (id: string, returnHome: boolean = false) => {
+  const handleDeleteTask = async (id: string) => {
     if (confirm("האם אתה בטוח שברצונך למחוק את המשימה ?")) {
-      const newTasks: Task[] = tasks.filter((t) => t.id !== id);
-      setTasks(newTasks);
-      if (returnHome) navigate(ROUTES.HOME);
+      const isDeleted = await deleteTaskById(id);
+      if (isDeleted) {
+        navigate(ROUTES.HOME);
+      }
     }
   };
 
-  const findTask = (id: string) => {
-    const task = tasks.find((t) => t.id === id);
+  const findTask = async (id: string) => {
+    const task = await findTaskById(id);
     return task;
   };
 
-  return { tasks, handleAddTask, handleEditTask, handleDeleteTask, findTask };
+  return { tasks, getTasks, handleAddTask, handleEditTask, handleDeleteTask, findTask };
 };
 
 export default useTasks;

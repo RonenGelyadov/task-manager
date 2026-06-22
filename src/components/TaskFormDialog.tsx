@@ -11,6 +11,8 @@ import {
 } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import type { Task } from "../types/Task";
+import useColumns from "../hooks/useColumns";
+import { useEffect } from "react";
 
 interface TaskFormDialogProps {
   open: boolean;
@@ -27,14 +29,27 @@ const TaskFormDialog = ({
   initialValues,
   setTask,
 }: TaskFormDialogProps) => {
-  const { register, handleSubmit, control, reset } = useForm<Task>({
+  const { columns, getColumns } = useColumns();
+
+  useEffect(() => {
+    getColumns();
+  }, []);
+
+  const { register, handleSubmit, control, reset, setValue, getValues } = useForm<Task>({
     defaultValues: initialValues ?? {
       title: "",
       body: "",
       dueDate: "",
       priority: "low",
+      columnId: "",
     },
   });
+
+  useEffect(() => {
+    if (!initialValues && columns.length > 0 && !getValues("columnId")) {
+      setValue("columnId", columns[0].id);
+    }
+  }, [columns, initialValues, setValue, getValues]);
 
   const onSubmit = (data: Task) => {
     handleSave(data);
@@ -54,11 +69,19 @@ const TaskFormDialog = ({
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
         <DialogContent dividers>
           <Stack spacing={3}>
-            <TextField
-              {...register("title")}
-              variant="outlined"
-              label="כותרת"
+            <Controller
+              name="columnId"
+              control={control}
+              render={({ field }) => (
+                <TextField {...field} select variant="outlined" label="עמודה">
+                  {columns.map((c) => (
+                    <MenuItem value={c.id}>{c.name}</MenuItem>
+                  ))}
+                </TextField>
+              )}
             />
+
+            <TextField {...register("title")} variant="outlined" label="כותרת" />
 
             <TextField
               {...register("body")}
@@ -68,11 +91,7 @@ const TaskFormDialog = ({
               label="תיאור המשימה"
             />
 
-            <TextField
-              {...register("dueDate")}
-              type="date"
-              variant="outlined"
-            />
+            <TextField {...register("dueDate")} type="date" variant="outlined" />
 
             <Controller
               name="priority"

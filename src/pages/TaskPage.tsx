@@ -32,10 +32,14 @@ const TaskPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (id) {
-      const foundTask = findTask(id);
-      setTask(foundTask);
-    }
+    const getTask = async () => {
+      if (id) {
+        const foundTask = await findTask(id);
+        setTask(foundTask);
+      }
+    };
+
+    getTask();
   }, [id]);
 
   return (
@@ -105,7 +109,7 @@ const TaskPage = () => {
               <IconButton
                 color="error"
                 onClick={() => {
-                  handleDeleteTask(task?.id as string, true);
+                  handleDeleteTask(id);
                 }}
                 sx={{
                   border: "1px solid",
