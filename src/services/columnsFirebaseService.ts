@@ -1,4 +1,4 @@
-import { collection, getDocs } from "firebase/firestore";
+import { addDoc, collection, getDocs } from "firebase/firestore";
 import { db } from "../config/firebase";
 import type { ColumnType } from "../types/Column";
 
@@ -20,6 +20,16 @@ export const getColumnsData = async (): Promise<ColumnType[]> => {
     return columns;
   } catch (error) {
     console.error("Error getting columns: ", error);
+    throw error;
+  }
+};
+
+export const addNewColumn = async (data: ColumnType) => {
+  try {
+    const newDoc = await addDoc(columnsCollection, data);
+    return newDoc.id;
+  } catch (error) {
+    console.error("Error adding task: ", error);
     throw error;
   }
 };
