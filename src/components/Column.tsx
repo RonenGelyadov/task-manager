@@ -51,30 +51,33 @@ const Column = ({ name, tasks }: ColumnProps) => {
           overflowY: "auto",
         }}
       >
-        <Typography
-          variant="body2"
-          sx={{
-            mt: 4,
-            fontStyle: "italic",
-            textAlign: "center",
-            color: "text.secondary",
-          }}
-        >
-          גרור משימות לכאן...
-        </Typography>
-        {tasks.map((task) => (
-          <TaskItem
-            key={task.id}
-            id={task.id}
-            title={task.title}
-            body={task.body}
-            priority={task.priority}
-            dueDate={task.dueDate}
-            isCompleted={task.isCompleted}
-            columnId={task.columnId}
-            createdAt={task.createdAt}
-          />
-        ))}
+        {tasks.length > 0 ? (
+          tasks.map((task) => (
+            <TaskItem
+              key={task.id}
+              id={task.id}
+              title={task.title}
+              body={task.body}
+              priority={task.priority}
+              dueDate={task.dueDate}
+              isCompleted={task.isCompleted}
+              columnId={task.columnId}
+              createdAt={task.createdAt}
+            />
+          ))
+        ) : (
+          <Typography
+            variant="body2"
+            sx={{
+              mt: 4,
+              fontStyle: "italic",
+              textAlign: "center",
+              color: "text.secondary",
+            }}
+          >
+            גרור משימות לכאן...
+          </Typography>
+        )}
       </Box>
     </Paper>
   );
