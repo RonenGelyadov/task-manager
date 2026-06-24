@@ -83,10 +83,10 @@ const TaskPage = () => {
             </Typography>
             <Stack direction="row" spacing={1}>
               <Chip
-                label="בתהליך"
+                label={task?.isCompleted ? "בוצע" : "בתהליך"}
                 size="small"
-                color="primary"
-                variant="outlined"
+                color={task?.isCompleted ? "success" : "primary"}
+                variant={task?.isCompleted ? "filled" : "outlined"}
                 sx={{ borderRadius: 1, fontWeight: 600, alignItems: "center" }}
               />
               <Typography variant="caption" sx={{ color: "text.disabled" }}>
