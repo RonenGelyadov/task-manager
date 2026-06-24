@@ -1,9 +1,6 @@
 import { useState } from "react";
 import type { ColumnType } from "../types/Column";
-import {
-  addNewColumn,
-  getColumnsData,
-} from "../services/columnsFirebaseService";
+import { addNewColumn, getColumnsData } from "../services/columnsFirebaseService";
 
 const useColumns = () => {
   const [columns, setColumns] = useState<ColumnType[]>([]);
@@ -23,14 +20,10 @@ const useColumns = () => {
     };
 
     try {
-      const newId = await addNewColumn(newColumnData);
+      await addNewColumn(newColumnData);
 
-      const newColumn: ColumnType = {
-        ...newColumnData,
-        id: newId,
-      };
-
-      setColumns((prev) => [...prev, newColumn]);
+      getColumns();
+      //setColumns((prev) => [...prev, newColumn]);
     } catch (error) {
       console.log(error);
     }

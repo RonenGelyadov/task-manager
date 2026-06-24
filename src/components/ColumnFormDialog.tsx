@@ -8,13 +8,13 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
-import type { Column } from "../types/Column";
+import type { ColumnType } from "../types/Column";
 import { useForm } from "react-hook-form";
 
 interface ColumnFormDialogProps {
   open: boolean;
   setClose: () => void;
-  handleSave: (data: Column) => void;
+  handleSave: (data: ColumnType) => void;
 }
 
 const ColumnFormDialog = ({
@@ -22,10 +22,10 @@ const ColumnFormDialog = ({
   setClose,
   handleSave,
 }: ColumnFormDialogProps) => {
-  const { register, handleSubmit, reset } = useForm<Column>();
+  const { register, handleSubmit, reset } = useForm<ColumnType>();
 
-  const onSubmit = (data: Column) => {
-    handleSave(data);
+  const onSubmit = async (data: ColumnType) => {
+    await handleSave(data);
     reset();
     setClose();
   };

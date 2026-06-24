@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Box, Fab, Typography } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import ViewColumnRoundedIcon from "@mui/icons-material/ViewColumnRounded";
@@ -12,88 +13,108 @@ import Column from "../components/Column";
 const HomePage = () => {
   const [isTaskOpen, setIsTaskOpen] = useState(false);
   const [isColumnOpen, setIsColumnOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { columns, getColumns, handleAddColumn } = useColumns();
   const { tasks, getTasks, handleAddTask } = useTasks();
 
+  const getAllData = async () => {
+    setIsLoading(true);
+    await getColumns();
+    await getTasks();
+    setIsLoading(false);
+  };
+
   useEffect(() => {
-    getColumns();
-    getTasks();
+    getAllData();
   }, []);
 
-  return (
-    <Box sx={{ width: "95%", mb: 7, display: "flex", gap: 3 }}>
-      {columns.map((c) => {
-        return (
-          <Column
-            key={c.id}
-            name={c.name}
-            tasks={tasks.filter((t) => t.columnId === c.id)}
-          />
-        );
-      })}
+  if (isLoading) {
+    return <CircularProgress aria-label="Loading…" />;
+  } else {
+    return (
       <Box
-        component="div"
-        dir="trl"
         sx={{
-          position: "fixed",
-          bottom: "4rem",
-          right: "2rem",
-          zIndex: 1200,
+          width: "95%",
+          mb: 7,
+          pb: 5,
           display: "flex",
-          gap: 2,
+          gap: 3,
+          overflowX: "auto",
+          scrollbarGutter: "stable",
         }}
       >
-        <Fab
-          color="secondary"
-          aria-label="add column"
+        {columns.map((c) => {
+          return (
+            <Column
+              key={c.id}
+              name={c.name}
+              tasks={tasks.filter((t) => t.columnId === c.id)}
+            />
+          );
+        })}
+        <Box
+          component="div"
+          dir="trl"
           sx={{
-            height: "5rem",
-            width: "5rem",
+            position: "fixed",
+            bottom: "4rem",
+            right: "2rem",
+            zIndex: 1200,
+            display: "flex",
+            gap: 2,
           }}
-          onClick={() => setIsColumnOpen(!isColumnOpen)}
         >
-          {isColumnOpen ? (
-            <CloseIcon fontSize="large" />
-          ) : (
-            <>
-              <Typography variant="h5">+</Typography>
-              <ViewColumnRoundedIcon fontSize="large" />
-            </>
-          )}
-        </Fab>
-        {isColumnOpen && (
-          <ColumnFormDialog
-            open={isColumnOpen}
-            setClose={() => setIsColumnOpen(false)}
-            handleSave={handleAddColumn}
-          />
-        )}
-        {columns.length > 0 && (
           <Fab
-            hidden
-            color="primary"
-            aria-label="add task"
+            color="secondary"
+            aria-label="add column"
             sx={{
               height: "5rem",
               width: "5rem",
             }}
-            onClick={() => setIsTaskOpen(!isTaskOpen)}
+            onClick={() => setIsColumnOpen(!isColumnOpen)}
           >
-            {isTaskOpen ? <CloseIcon fontSize="large" /> : <AddIcon fontSize="large" />}
+            {isColumnOpen ? (
+              <CloseIcon fontSize="large" />
+            ) : (
+              <>
+                <Typography variant="h5">+</Typography>
+                <ViewColumnRoundedIcon fontSize="large" />
+              </>
+            )}
           </Fab>
-        )}
-        {isTaskOpen && (
-          <TaskFormDialog
-            open={isTaskOpen}
-            setClose={() => setIsTaskOpen(false)}
-            handleSave={handleAddTask}
-          />
-        )}
+          {isColumnOpen && (
+            <ColumnFormDialog
+              open={isColumnOpen}
+              setClose={() => setIsColumnOpen(false)}
+              handleSave={handleAddColumn}
+            />
+          )}
+          {columns.length > 0 && (
+            <Fab
+              hidden
+              color="primary"
+              aria-label="add task"
+              sx={{
+                height: "5rem",
+                width: "5rem",
+              }}
+              onClick={() => setIsTaskOpen(!isTaskOpen)}
+            >
+              {isTaskOpen ? <CloseIcon fontSize="large" /> : <AddIcon fontSize="large" />}
+            </Fab>
+          )}
+          {isTaskOpen && (
+            <TaskFormDialog
+              open={isTaskOpen}
+              setClose={() => setIsTaskOpen(false)}
+              handleSave={handleAddTask}
+            />
+          )}
+        </Box>
       </Box>
-    </Box>
-  );
+    );
+  }
 };
 
 export default HomePage;

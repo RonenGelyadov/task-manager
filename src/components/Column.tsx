@@ -16,14 +16,16 @@ const Column = ({ name, tasks }: ColumnProps) => {
       dir="rtl"
       elevation={2}
       sx={{
-        width: "25vw",
-        minHeight: "80vh",
+        minWidth: "20vw",
+        maxWidth: "20vw",
+        minHeight: "100%",
+        maxHeight: "100%",
         display: "flex",
         flexDirection: "column",
         borderRadius: 3,
-        border: `1px solid ${theme.palette.divider}`,
+        border: `2px solid ${theme.palette.divider}`,
         bgcolor: theme.palette.mode === "dark" ? "background.paper" : "grey.50",
-        overflow: "hidden",
+        overflow: "auto",
       }}
     >
       <Box
