@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import { db } from "../config/firebase";
 import type { ColumnType } from "../types/Column";
 
@@ -29,7 +29,17 @@ export const addNewColumn = async (data: ColumnType) => {
     const newDoc = await addDoc(columnsCollection, data);
     return newDoc.id;
   } catch (error) {
-    console.error("Error adding task: ", error);
+    console.error("Error adding column: ", error);
+    throw error;
+  }
+};
+
+export const deleteColumnById = async (id: string) => {
+  try {
+    const columnDocRef = doc(db, columnsCollectionName, id);
+    await deleteDoc(columnDocRef);
+  } catch (error) {
+    console.error("Error deleting column: ", error);
     throw error;
   }
 };

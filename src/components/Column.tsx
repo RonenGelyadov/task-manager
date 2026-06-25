@@ -1,14 +1,17 @@
-import { Box, Paper, Typography, useTheme } from "@mui/material";
+import { Box, IconButton, Paper, Tooltip, Typography, useTheme } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import type { ColumnType } from "../types/Column";
 import type { Task } from "../types/Task";
 import TaskItem from "./TaskItem";
 
 type ColumnProps = {
+  id: ColumnType["id"];
   name: ColumnType["name"];
   tasks: Task[];
+  handleDeleteColumn: (id: string) => void;
 };
 
-const Column = ({ name, tasks }: ColumnProps) => {
+const Column = ({ id, name, tasks, handleDeleteColumn }: ColumnProps) => {
   const theme = useTheme();
 
   return (
@@ -24,7 +27,7 @@ const Column = ({ name, tasks }: ColumnProps) => {
         flexDirection: "column",
         borderRadius: 3,
         border: `2px solid ${theme.palette.divider}`,
-        bgcolor: theme.palette.mode === "dark" ? "background.paper" : "grey.50",
+        bgcolor: theme.palette.mode === "dark" ? "background.paper" : "grey.100",
         overflow: "auto",
       }}
     >
@@ -33,14 +36,24 @@ const Column = ({ name, tasks }: ColumnProps) => {
           p: 2,
           display: "flex",
           alignItems: "center",
-          justifyContent: "center",
           borderBottom: `1px solid ${theme.palette.divider}`,
-          bgcolor: theme.palette.mode === "dark" ? "grey.900" : "white",
+          bgcolor: theme.palette.mode === "dark" ? "grey.900" : "grey.300",
         }}
       >
-        <Typography variant="h6" sx={{ fontSize: "1.1rem", fontWeight: "600" }}>
+        <Typography variant="h6" sx={{ fontSize: "1.5rem", fontWeight: "600", flex: 1 }}>
           {name}
         </Typography>
+        <Tooltip title="מחק עמודה">
+          <IconButton
+            color="error"
+            sx={{
+              backgroundColor: "error.shades",
+            }}
+            onClick={() => handleDeleteColumn(id)}
+          >
+            <DeleteIcon fontSize="medium" />
+          </IconButton>
+        </Tooltip>
       </Box>
 
       <Box

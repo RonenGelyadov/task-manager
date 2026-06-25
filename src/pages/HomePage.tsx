@@ -15,7 +15,7 @@ const HomePage = () => {
   const [isColumnOpen, setIsColumnOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const { columns, getColumns, handleAddColumn } = useColumns();
+  const { columns, getColumns, handleAddColumn, handleDeleteColumn } = useColumns();
   const { tasks, getTasks, handleAddTask } = useTasks();
 
   const getAllData = async () => {
@@ -52,8 +52,10 @@ const HomePage = () => {
             return (
               <Column
                 key={c.id}
+                id={c.id}
                 name={c.name}
                 tasks={tasks.filter((t) => t.columnId === c.id)}
+                handleDeleteColumn={handleDeleteColumn}
               />
             );
           })
