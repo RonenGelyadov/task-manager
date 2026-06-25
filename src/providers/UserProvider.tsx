@@ -1,31 +1,69 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 import type { User } from "../types/User";
+import { auth } from "../config/firebase";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
 
 interface UserContextType {
   user: User | null;
-  login: (user: User) => void;
+  signUp: (email: string, password: string) => void;
+  login: (email: string, password: string) => void;
   logout: () => void;
-  isLoading: boolean;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const login = (userData: User) => {
-    setIsLoading(true);
-    setUser(userData);
-    setIsLoading(false);
+  const signUp = async (email: string, password: string) => {
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      throw error;
+    }
   };
 
-  const logout = () => {
-    setUser(null);
+  const login = async (email: string, password: string) => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      throw error;
+    }
   };
+
+  const logout = async () => {
+    await signOut(auth);
+  };
+
+  useEffect(() => {
+    /*const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser) {
+        const userData = await getUserById(currentUser.uid);
+        if (userData) {
+          setUser(userData);
+        } else {
+          setUser(currentUser as any);
+        }
+      } else {
+        setUser(null);
+      }
+    });
+    return unsubscribe;*/
+  }, []);
 
   return (
-    <UserContext.Provider value={{ user, login, logout, isLoading }}>
+    <UserContext.Provider value={{ user, signUp, login, logout }}>
       {children}
     </UserContext.Provider>
   );

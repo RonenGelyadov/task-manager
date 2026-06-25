@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Fab, Typography } from "@mui/material";
+import { Box, Fab, Tooltip, Typography } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
@@ -19,7 +19,6 @@ const HomePage = () => {
   const { tasks, getTasks, handleAddTask } = useTasks();
 
   const getAllData = async () => {
-    setIsLoading(true);
     await getColumns();
     await getTasks();
     setIsLoading(false);
@@ -30,7 +29,11 @@ const HomePage = () => {
   }, []);
 
   if (isLoading) {
-    return <CircularProgress aria-label="Loading…" />;
+    return (
+      <Box sx={{ height: "100%", display: "flex", alignItems: "center" }}>
+        <CircularProgress size="5rem" aria-label="Loading…" />
+      </Box>
+    );
   } else {
     return (
       <Box
@@ -44,15 +47,26 @@ const HomePage = () => {
           scrollbarGutter: "stable",
         }}
       >
-        {columns.map((c) => {
-          return (
-            <Column
-              key={c.id}
-              name={c.name}
-              tasks={tasks.filter((t) => t.columnId === c.id)}
-            />
-          );
-        })}
+        {columns.length > 0 ? (
+          columns.map((c) => {
+            return (
+              <Column
+                key={c.id}
+                name={c.name}
+                tasks={tasks.filter((t) => t.columnId === c.id)}
+              />
+            );
+          })
+        ) : (
+          <Typography
+            dir="rtl"
+            color="textSecondary"
+            variant="h6"
+            sx={{ width: "100%", textAlign: "center", p: 5 }}
+          >
+            אין עמודות, צור עמודה ראשונה כדי להוסיף משימות.
+          </Typography>
+        )}
         <Box
           component="div"
           dir="trl"
@@ -65,24 +79,26 @@ const HomePage = () => {
             gap: 2,
           }}
         >
-          <Fab
-            color="secondary"
-            aria-label="add column"
-            sx={{
-              height: "5rem",
-              width: "5rem",
-            }}
-            onClick={() => setIsColumnOpen(!isColumnOpen)}
-          >
-            {isColumnOpen ? (
-              <CloseIcon fontSize="large" />
-            ) : (
-              <>
-                <Typography variant="h5">+</Typography>
-                <ViewColumnRoundedIcon fontSize="large" />
-              </>
-            )}
-          </Fab>
+          <Tooltip title="הוספת עמודה">
+            <Fab
+              color="secondary"
+              aria-label="add column"
+              sx={{
+                height: "5rem",
+                width: "5rem",
+              }}
+              onClick={() => setIsColumnOpen(!isColumnOpen)}
+            >
+              {isColumnOpen ? (
+                <CloseIcon fontSize="large" />
+              ) : (
+                <>
+                  <Typography variant="h5">+</Typography>
+                  <ViewColumnRoundedIcon fontSize="large" />
+                </>
+              )}
+            </Fab>
+          </Tooltip>
           {isColumnOpen && (
             <ColumnFormDialog
               open={isColumnOpen}
@@ -91,18 +107,24 @@ const HomePage = () => {
             />
           )}
           {columns.length > 0 && (
-            <Fab
-              hidden
-              color="primary"
-              aria-label="add task"
-              sx={{
-                height: "5rem",
-                width: "5rem",
-              }}
-              onClick={() => setIsTaskOpen(!isTaskOpen)}
-            >
-              {isTaskOpen ? <CloseIcon fontSize="large" /> : <AddIcon fontSize="large" />}
-            </Fab>
+            <Tooltip title="הוספת משימה">
+              <Fab
+                hidden
+                color="primary"
+                aria-label="add task"
+                sx={{
+                  height: "5rem",
+                  width: "5rem",
+                }}
+                onClick={() => setIsTaskOpen(!isTaskOpen)}
+              >
+                {isTaskOpen ? (
+                  <CloseIcon fontSize="large" />
+                ) : (
+                  <AddIcon fontSize="large" />
+                )}
+              </Fab>
+            </Tooltip>
           )}
           {isTaskOpen && (
             <TaskFormDialog
