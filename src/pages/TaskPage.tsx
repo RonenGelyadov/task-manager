@@ -109,7 +109,7 @@ const TaskPage = () => {
               <IconButton
                 color="error"
                 onClick={() => {
-                  handleDeleteTask(id);
+                  handleDeleteTask(id as string);
                 }}
                 sx={{
                   border: "1px solid",

@@ -1,15 +1,9 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import type { User } from "../types/User";
 import { auth } from "../config/firebase";
 import {
   createUserWithEmailAndPassword,
-  onAuthStateChanged,
+  /*onAuthStateChanged,*/
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
@@ -24,7 +18,7 @@ interface UserContextType {
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 const UserProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user /*, setUser*/] = useState<User | null>(null);
 
   const signUp = async (email: string, password: string) => {
     try {
