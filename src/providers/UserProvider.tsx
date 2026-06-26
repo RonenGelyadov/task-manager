@@ -50,7 +50,8 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
         return true;
       }
     } catch (error) {
-      throw error;
+      console.error("Sign up failed:", error);
+      return false;
     }
   };
 
