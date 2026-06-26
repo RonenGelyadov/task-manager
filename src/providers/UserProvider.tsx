@@ -18,7 +18,7 @@ interface UserSignUpData {
 
 interface UserContextType {
   user: User | null;
-  signUp: (userData: UserSignUpData) => Promise<boolean>;
+  signUp: (userData: UserSignUpData) => Promise<boolean | undefined>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 }
@@ -33,7 +33,7 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
     password,
     firstName,
     lastName,
-  }: UserSignUpData): Promise<boolean> => {
+  }: UserSignUpData): Promise<boolean | undefined> => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
@@ -50,8 +50,7 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
         return true;
       }
     } catch (error) {
-      console.error("Sign up failed:", error);
-      return false;
+      throw error;
     }
   };
 
