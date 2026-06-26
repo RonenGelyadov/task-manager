@@ -1,19 +1,18 @@
-import {
-  Box,
-  Button,
-  Container,
-  Paper,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Container, Paper, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import NavItem from "../router/NavItem";
+import { useUser } from "../providers/UserProvider";
+import ROUTES from "../router/routs";
 
 const RegisterPage = () => {
   const { register, handleSubmit } = useForm();
+  const { signUp } = useUser();
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const navigate = useNavigate();
+
+  const onSubmit = async (data: any) => {
+    (await signUp(data)) && navigate(ROUTES.HOME);
   };
 
   return (
@@ -38,19 +37,11 @@ const RegisterPage = () => {
             borderRadius: 2,
           }}
         >
-          <Typography
-            component="h1"
-            variant="h5"
-            sx={{ mb: 3, fontWeight: "bold" }}
-          >
+          <Typography component="h1" variant="h5" sx={{ mb: 3, fontWeight: "bold" }}>
             הרשמה
           </Typography>
 
-          <Box
-            onSubmit={handleSubmit(onSubmit)}
-            component="form"
-            sx={{ width: "100%" }}
-          >
+          <Box onSubmit={handleSubmit(onSubmit)} component="form" sx={{ width: "100%" }}>
             <TextField
               {...register("firstName")}
               fullWidth
