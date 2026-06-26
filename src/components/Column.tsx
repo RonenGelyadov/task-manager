@@ -19,8 +19,8 @@ const Column = ({ id, name, tasks, handleDeleteColumn }: ColumnProps) => {
       dir="rtl"
       elevation={2}
       sx={{
-        minWidth: "20vw",
-        maxWidth: "20vw",
+        minWidth: { xs: "95vw", md: "50vw", lg: "40vw", xl: "25vw" },
+        maxWidth: { xs: "95vw", md: "50vw", lg: "40vw", xl: "25vw" },
         minHeight: "100%",
         maxHeight: "100%",
         display: "flex",
@@ -49,7 +49,13 @@ const Column = ({ id, name, tasks, handleDeleteColumn }: ColumnProps) => {
             sx={{
               backgroundColor: "error.shades",
             }}
-            onClick={() => handleDeleteColumn(id)}
+            onClick={() => {
+              if (tasks.length > 0) {
+                alert("אין אפשרות למחוק עמודה עם משימות !");
+                return;
+              }
+              handleDeleteColumn(id);
+            }}
           >
             <DeleteIcon fontSize="medium" />
           </IconButton>
