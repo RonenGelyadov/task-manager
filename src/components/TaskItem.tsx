@@ -10,7 +10,7 @@ const TaskItem = ({
   priority,
   dueDate,
   isCompleted,
-}: Task) => {
+}: Omit<Task, "userId">) => {
   const getPriorityColor = (
     level: string,
   ): "error" | "warning" | "success" | "default" => {

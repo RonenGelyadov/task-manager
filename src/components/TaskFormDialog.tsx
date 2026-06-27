@@ -55,7 +55,7 @@ const TaskFormDialog = ({
   }, [columns, initialValues, setValue, getValues]);
 
   const onSubmit = (data: Task) => {
-    handleSave(data, user.id);
+    handleSave(data, user?.id);
 
     if (setTask) {
       setTask(data);
