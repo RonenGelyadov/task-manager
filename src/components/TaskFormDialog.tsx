@@ -13,11 +13,12 @@ import { useForm, Controller } from "react-hook-form";
 import type { Task } from "../types/Task";
 import useColumns from "../hooks/useColumns";
 import { useEffect } from "react";
+import { useUser } from "../providers/UserProvider";
 
 interface TaskFormDialogProps {
   open: boolean;
   setClose: () => void;
-  handleSave: (data: Task) => void;
+  handleSave: (data: Task, userId: string) => void;
   initialValues?: Task | null;
   setTask?: (data: Task) => void;
 }
@@ -30,6 +31,8 @@ const TaskFormDialog = ({
   setTask,
 }: TaskFormDialogProps) => {
   const { columns, getColumns } = useColumns();
+
+  const { user } = useUser();
 
   useEffect(() => {
     getColumns();
@@ -52,7 +55,7 @@ const TaskFormDialog = ({
   }, [columns, initialValues, setValue, getValues]);
 
   const onSubmit = (data: Task) => {
-    handleSave(data);
+    handleSave(data, user.id);
 
     if (setTask) {
       setTask(data);

@@ -7,4 +7,5 @@ export interface Task {
   createdAt: string;
   dueDate: string;
   isCompleted: boolean;
+  userId: string;
 }

@@ -1,10 +1,10 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import type { User } from "../types/User";
-import { addUser } from "../services/usersFirebaseService";
+import { addUser, getUserById } from "../services/usersFirebaseService";
 import { auth } from "../config/firebase";
 import {
   createUserWithEmailAndPassword,
-  /*onAuthStateChanged,*/
+  onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
@@ -19,14 +19,20 @@ interface UserSignUpData {
 interface UserContextType {
   user: User | null;
   signUp: (userData: UserSignUpData) => Promise<boolean | undefined>;
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => Promise<void>;
+  login: ({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }) => Promise<boolean | undefined>;
+  logout: () => Promise<boolean | undefined>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 const UserProvider = ({ children }: { children: ReactNode }) => {
-  const [user /*, setUser*/] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   const signUp = async ({
     email,
@@ -54,32 +60,47 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const login = async (email: string, password: string) => {
+  const login = async ({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }): Promise<boolean | undefined> => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      if (userCredential.user) {
+        return true;
+      }
     } catch (error) {
       throw error;
     }
   };
 
-  const logout = async () => {
-    await signOut(auth);
+  const logout = async (): Promise<boolean | undefined> => {
+    try {
+      await signOut(auth);
+      return true;
+    } catch (error) {
+      throw error;
+    }
   };
 
   useEffect(() => {
-    /*const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         const userData = await getUserById(currentUser.uid);
         if (userData) {
           setUser(userData);
         } else {
+          console.error("User data not found in Firestore");
           setUser(currentUser as any);
         }
       } else {
         setUser(null);
       }
     });
-    return unsubscribe;*/
+    return unsubscribe;
   }, []);
 
   return (

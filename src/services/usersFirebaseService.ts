@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, setDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { db } from "../config/firebase";
 import type { User } from "../types/User";
 
@@ -31,3 +31,18 @@ export async function addUser(user: User): Promise<string> {
     throw error;
   }
 }
+
+export const getUserById = async (id: string): Promise<User | null> => {
+  try {
+    const userDocRef = doc(db, usersCollectionName, id);
+    const userDocSnap = await getDoc(userDocRef);
+    if (userDocSnap.exists()) {
+      return userDocSnap.data() as User;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error getting user:", error);
+    throw error;
+  }
+};

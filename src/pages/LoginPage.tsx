@@ -1,13 +1,9 @@
-import {
-  Box,
-  Button,
-  Container,
-  Paper,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Container, Paper, TextField, Typography } from "@mui/material";
 import NavItem from "../router/NavItem";
 import { useForm } from "react-hook-form";
+import { useUser } from "../providers/UserProvider";
+import { useNavigate } from "react-router-dom";
+import ROUTES from "../router/routs";
 
 interface LoginForm {
   email: string;
@@ -16,9 +12,11 @@ interface LoginForm {
 
 const LoginPage = () => {
   const { register, handleSubmit } = useForm<LoginForm>();
+  const { login } = useUser();
+  const navigate = useNavigate();
 
-  const onSubmit = (data: LoginForm) => {
-    console.log(data);
+  const onSubmit = async (data: LoginForm) => {
+    (await login(data)) && navigate(ROUTES.HOME);
   };
 
   return (
@@ -43,19 +41,11 @@ const LoginPage = () => {
             borderRadius: 2,
           }}
         >
-          <Typography
-            component="h1"
-            variant="h5"
-            sx={{ mb: 3, fontWeight: "bold" }}
-          >
+          <Typography component="h1" variant="h5" sx={{ mb: 3, fontWeight: "bold" }}>
             התחברות
           </Typography>
 
-          <Box
-            component="form"
-            onSubmit={handleSubmit(onSubmit)}
-            sx={{ width: "100%" }}
-          >
+          <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ width: "100%" }}>
             <TextField
               {...register("email")}
               fullWidth

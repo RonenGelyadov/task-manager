@@ -23,11 +23,12 @@ const useTasks = () => {
     }
   };
 
-  const handleAddTask = async (task: Task) => {
+  const handleAddTask = async (task: Task, userId: string) => {
     const newTaskData: Task = {
       ...task,
       createdAt: new Date().toLocaleString("he-IL"),
       isCompleted: false,
+      userId,
     };
 
     try {

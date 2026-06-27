@@ -9,6 +9,7 @@ import TaskFormDialog from "../components/TaskFormDialog";
 import useColumns from "../hooks/useColumns";
 import ColumnFormDialog from "../components/ColumnFormDialog";
 import Column from "../components/Column";
+import { useUser } from "../providers/UserProvider";
 
 const HomePage = () => {
   const [isTaskOpen, setIsTaskOpen] = useState(false);
@@ -17,6 +18,7 @@ const HomePage = () => {
 
   const { columns, getColumns, handleAddColumn, handleDeleteColumn } = useColumns();
   const { tasks, getTasks, handleAddTask } = useTasks();
+  const { user } = useUser();
 
   const getAllData = async () => {
     await getColumns();
@@ -69,73 +71,75 @@ const HomePage = () => {
             אין עמודות, צור עמודה ראשונה כדי להוסיף משימות.
           </Typography>
         )}
-        <Box
-          component="div"
-          dir="trl"
-          sx={{
-            position: "fixed",
-            bottom: "4rem",
-            right: "2rem",
-            zIndex: 1200,
-            display: "flex",
-            gap: 2,
-          }}
-        >
-          <Tooltip title="הוספת עמודה">
-            <Fab
-              color="secondary"
-              aria-label="add column"
-              sx={{
-                height: "5rem",
-                width: "5rem",
-              }}
-              onClick={() => setIsColumnOpen(!isColumnOpen)}
-            >
-              {isColumnOpen ? (
-                <CloseIcon fontSize="large" />
-              ) : (
-                <>
-                  <Typography variant="h5">+</Typography>
-                  <ViewColumnRoundedIcon fontSize="large" />
-                </>
-              )}
-            </Fab>
-          </Tooltip>
-          {isColumnOpen && (
-            <ColumnFormDialog
-              open={isColumnOpen}
-              setClose={() => setIsColumnOpen(false)}
-              handleSave={handleAddColumn}
-            />
-          )}
-          {columns.length > 0 && (
-            <Tooltip title="הוספת משימה">
+        {user && (
+          <Box
+            component="div"
+            dir="trl"
+            sx={{
+              position: "fixed",
+              bottom: "4rem",
+              right: "2rem",
+              zIndex: 1200,
+              display: "flex",
+              gap: 2,
+            }}
+          >
+            <Tooltip title="הוספת עמודה">
               <Fab
-                hidden
-                color="primary"
-                aria-label="add task"
+                color="secondary"
+                aria-label="add column"
                 sx={{
                   height: "5rem",
                   width: "5rem",
                 }}
-                onClick={() => setIsTaskOpen(!isTaskOpen)}
+                onClick={() => setIsColumnOpen(!isColumnOpen)}
               >
-                {isTaskOpen ? (
+                {isColumnOpen ? (
                   <CloseIcon fontSize="large" />
                 ) : (
-                  <AddIcon fontSize="large" />
+                  <>
+                    <Typography variant="h5">+</Typography>
+                    <ViewColumnRoundedIcon fontSize="large" />
+                  </>
                 )}
               </Fab>
             </Tooltip>
-          )}
-          {isTaskOpen && (
-            <TaskFormDialog
-              open={isTaskOpen}
-              setClose={() => setIsTaskOpen(false)}
-              handleSave={handleAddTask}
-            />
-          )}
-        </Box>
+            {isColumnOpen && (
+              <ColumnFormDialog
+                open={isColumnOpen}
+                setClose={() => setIsColumnOpen(false)}
+                handleSave={handleAddColumn}
+              />
+            )}
+            {columns.length > 0 && (
+              <Tooltip title="הוספת משימה">
+                <Fab
+                  hidden
+                  color="primary"
+                  aria-label="add task"
+                  sx={{
+                    height: "5rem",
+                    width: "5rem",
+                  }}
+                  onClick={() => setIsTaskOpen(!isTaskOpen)}
+                >
+                  {isTaskOpen ? (
+                    <CloseIcon fontSize="large" />
+                  ) : (
+                    <AddIcon fontSize="large" />
+                  )}
+                </Fab>
+              </Tooltip>
+            )}
+            {isTaskOpen && (
+              <TaskFormDialog
+                open={isTaskOpen}
+                setClose={() => setIsTaskOpen(false)}
+                handleSave={handleAddTask}
+              />
+            )}
+          </Box>
+        )}
       </Box>
     );
   }
