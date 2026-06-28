@@ -1,4 +1,11 @@
-import { Box, IconButton, Paper, Tooltip, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  Paper,
+  Tooltip,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import type { ColumnType } from "../types/Column";
 import type { Task } from "../types/Task";
@@ -27,7 +34,8 @@ const Column = ({ id, name, tasks, handleDeleteColumn }: ColumnProps) => {
         flexDirection: "column",
         borderRadius: 3,
         border: `2px solid ${theme.palette.divider}`,
-        bgcolor: theme.palette.mode === "dark" ? "background.paper" : "grey.100",
+        bgcolor:
+          theme.palette.mode === "dark" ? "background.paper" : "grey.100",
         overflow: "auto",
       }}
     >
@@ -40,7 +48,10 @@ const Column = ({ id, name, tasks, handleDeleteColumn }: ColumnProps) => {
           bgcolor: theme.palette.mode === "dark" ? "grey.900" : "grey.300",
         }}
       >
-        <Typography variant="h6" sx={{ fontSize: "1.5rem", fontWeight: "600", flex: 1 }}>
+        <Typography
+          variant="h6"
+          sx={{ fontSize: "1.5rem", fontWeight: "600", flex: 1 }}
+        >
           {name}
         </Typography>
         <Tooltip title="מחק עמודה">
@@ -96,7 +107,7 @@ const Column = ({ id, name, tasks, handleDeleteColumn }: ColumnProps) => {
               color: "text.secondary",
             }}
           >
-            גרור משימות לכאן...
+            אין משימות בעמודה...
           </Typography>
         )}
       </Box>
