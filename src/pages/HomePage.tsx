@@ -16,7 +16,8 @@ const HomePage = () => {
   const [isColumnOpen, setIsColumnOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const { columns, getColumns, handleAddColumn, handleDeleteColumn } = useColumns();
+  const { columns, getColumns, handleAddColumn, handleDeleteColumn } =
+    useColumns();
   const { tasks, getTasks, handleAddTask } = useTasks();
   const { user } = useUser();
 
@@ -62,14 +63,20 @@ const HomePage = () => {
             );
           })
         ) : (
-          <Typography
-            dir="rtl"
-            color="textSecondary"
-            variant="h6"
-            sx={{ width: "100%", textAlign: "center", p: 5 }}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              height: "100%",
+              p: 5,
+            }}
           >
-            אין עמודות, צור עמודה ראשונה כדי להוסיף משימות.
-          </Typography>
+            <Typography dir="rtl" color="textSecondary" variant="h6">
+              אין עמודות, צור עמודה ראשונה כדי להוסיף משימות.
+            </Typography>
+          </Box>
         )}
         {user && (
           <Box
