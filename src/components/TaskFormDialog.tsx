@@ -21,7 +21,7 @@ interface TaskFormDialogProps {
   handleSave: (data: Task, userId: string) => void;
   initialValues?: Task | null;
   setTask?: (data: Task) => void;
-  id?: string;
+  id?: string | undefined;
 }
 
 const TaskFormDialog = ({
@@ -30,7 +30,7 @@ const TaskFormDialog = ({
   handleSave,
   initialValues,
   setTask,
-  id,
+  id = undefined,
 }: TaskFormDialogProps) => {
   const { columns, getColumns } = useColumns();
 
@@ -57,11 +57,16 @@ const TaskFormDialog = ({
   }, [columns, initialValues, setValue, getValues]);
 
   const onSubmit = (newData: Task) => {
-    const editData = {
-      ...newData,
-      id,
-    };
-    handleSave(id ? editData : newData, user!.id);
+    if (id) {
+      const editData = {
+        ...newData,
+        id,
+      };
+
+      handleSave(editData, user!.id);
+    } else {
+      handleSave(newData, user!.id);
+    }
 
     if (setTask) {
       setTask(newData);

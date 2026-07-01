@@ -70,6 +70,7 @@ export const deleteTaskById = async (id: string): Promise<boolean | undefined> =
     await deleteDoc(teskDocRef);
     return true;
   } catch (error) {
-    throw error('Error deleting task: ', error);
+    console.error('Error deleting task: ', error);
+    throw error;
   }
 };

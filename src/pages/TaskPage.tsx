@@ -230,7 +230,7 @@ const TaskPage = () => {
           handleSave={handleEditTask}
           initialValues={task}
           setTask={setTask}
-          id={task.id}
+          id={task?.id}
         />
       )}
     </Container>
