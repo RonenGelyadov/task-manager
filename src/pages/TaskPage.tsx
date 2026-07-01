@@ -85,7 +85,7 @@ const TaskPage = () => {
             >
               {task?.title}
             </Typography>
-            <Stack direction="row" spacing={1}>
+            <Stack direction="row" sx={{ gap: 2, alignItems: 'center' }}>
               <Chip
                 label={task?.isCompleted ? 'בוצע' : 'בתהליך'}
                 size="small"
@@ -209,18 +209,27 @@ const TaskPage = () => {
           fullWidth
           variant="contained"
           size="large"
-          endIcon={<CheckCircleOutlineIcon sx={{ mx: 1 }} />}
+          endIcon={!task?.isCompleted && <CheckCircleOutlineIcon sx={{ mx: 1 }} />}
           sx={{
             py: 2,
             borderRadius: 3,
             fontWeight: 700,
             fontSize: '1rem',
-            boxShadow: 'none',
-            '&:hover': { boxShadow: 'none', backgroundColor: 'success.dark' },
-            backgroundColor: 'success.main',
+            boxShadows: 'none',
+            '&:hover': {
+              boxShadow: 'none',
+              backgroundColor: task?.isCompleted ? 'primary.dark' : 'success.dark',
+            },
+            backgroundColor: task?.isCompleted ? 'primary.main' : 'success.main',
+          }}
+          onClick={async () => {
+            if (!user) return;
+            const updatedTask = { ...task, isCompleted: !task?.isCompleted as boolean };
+            await handleEditTask(updatedTask as Task, user?.id || '');
+            setTask(updatedTask as Task);
           }}
         >
-          סמן כמשימה שהושלמה
+          {task?.isCompleted ? 'סמן כמשימה בתהליך' : 'סמן כמשימה שהושלמה'}
         </Button>
       </Paper>
       {isOpen && (
