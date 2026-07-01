@@ -1,13 +1,14 @@
-import { useState } from "react";
-import type { Task } from "../types/Task";
+import { useState } from 'react';
+import type { Task } from '../types/Task';
 import {
   addNewTask,
   deleteTaskById,
+  editTask,
   findTaskById,
   getTasksData,
-} from "../services/tasksFirebaseService";
-import { useNavigate } from "react-router-dom";
-import ROUTES from "../router/routs";
+} from '../services/tasksFirebaseService';
+import { useNavigate } from 'react-router-dom';
+import ROUTES from '../router/routs';
 
 const useTasks = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -23,10 +24,15 @@ const useTasks = () => {
     }
   };
 
-  const handleAddTask = async (task: Task, userId: string) => {
+  const findTask = async (id: string) => {
+    const task = await findTaskById(id);
+    return task;
+  };
+
+  const handleAddTask = async (taskData: Task, userId: string) => {
     const newTaskData: Task = {
-      ...task,
-      createdAt: new Date().toLocaleString("he-IL"),
+      ...taskData,
+      createdAt: new Date().toLocaleString('he-IL'),
       isCompleted: false,
       userId,
     };
@@ -45,23 +51,33 @@ const useTasks = () => {
     }
   };
 
-  const handleEditTask = (task: Task) => {
-    const newTasks: Task[] = tasks.map((t) => (t.id === task.id ? task : t));
-    setTasks(newTasks);
+  const handleEditTask = async (taskData: Task, userId: string) => {
+    if (taskData.userId !== userId) return;
+
+    try {
+      const task = await findTask(taskData.id);
+      const updatedTask: Task = {
+        ...task,
+        ...taskData,
+      };
+
+      const editSuccess = await editTask(updatedTask);
+      if (editSuccess) {
+        const newTasks: Task[] = tasks.map((t) => (t.id === taskData.id ? taskData : t));
+        setTasks(newTasks);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleDeleteTask = async (id: string) => {
-    if (confirm("האם אתה בטוח שברצונך למחוק את המשימה ?")) {
+    if (confirm('האם אתה בטוח שברצונך למחוק את המשימה ?')) {
       const isDeleted = await deleteTaskById(id);
       if (isDeleted) {
         navigate(ROUTES.HOME);
       }
     }
-  };
-
-  const findTask = async (id: string) => {
-    const task = await findTaskById(id);
-    return task;
   };
 
   return { tasks, getTasks, handleAddTask, handleEditTask, handleDeleteTask, findTask };
