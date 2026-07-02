@@ -80,7 +80,22 @@ const useTasks = () => {
     }
   };
 
-  return { tasks, getTasks, handleAddTask, handleEditTask, handleDeleteTask, findTask };
+  const moveTask = (taskId: string, newColumnId: string) => {
+    // Optimistic update — move the task in local state immediately
+    setTasks((prev) =>
+      prev.map((t) => (t.id === taskId ? { ...t, columnId: newColumnId } : t)),
+    );
+
+    // Background Firebase sync — fire and forget
+    const task = tasks.find((t) => t.id === taskId);
+    if (task) {
+      editTask({ ...task, columnId: newColumnId }).catch((err) =>
+        console.error('Failed to sync task move to Firebase:', err),
+      );
+    }
+  };
+
+  return { tasks, getTasks, handleAddTask, handleEditTask, handleDeleteTask, findTask, moveTask };
 };
 
 export default useTasks;

@@ -4,6 +4,7 @@ import type { ColumnType } from '../types/Column';
 import type { Task } from '../types/Task';
 import TaskItem from './TaskItem';
 import { useUser } from '../providers/UserProvider';
+import { useDroppable } from '@dnd-kit/core';
 
 type ColumnProps = {
   id: ColumnType['id'];
@@ -14,8 +15,8 @@ type ColumnProps = {
 
 const Column = ({ id, name, tasks, handleDeleteColumn }: ColumnProps) => {
   const theme = useTheme();
-
   const { user } = useUser();
+  const { setNodeRef, isOver } = useDroppable({ id });
 
   return (
     <Paper
@@ -68,6 +69,7 @@ const Column = ({ id, name, tasks, handleDeleteColumn }: ColumnProps) => {
       </Box>
 
       <Box
+        ref={setNodeRef}
         sx={{
           p: 2,
           flexGrow: 1,
@@ -75,6 +77,14 @@ const Column = ({ id, name, tasks, handleDeleteColumn }: ColumnProps) => {
           flexDirection: 'column',
           gap: 2,
           overflowY: 'auto',
+          transition: 'background-color 0.2s ease',
+          backgroundColor: isOver
+            ? theme.palette.mode === 'dark'
+              ? 'rgba(255,255,255,0.06)'
+              : 'rgba(0,0,0,0.04)'
+            : 'transparent',
+          outline: isOver ? `2px dashed ${theme.palette.primary.main}` : 'none',
+          borderRadius: 2,
         }}
       >
         {tasks.length > 0 ? (
